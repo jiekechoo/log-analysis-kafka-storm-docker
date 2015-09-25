@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder
+            by default -->
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+        </encoder>
+    </appender>
+    <appender name="KAFKA"
+              class="com.log.kafka.appender.KafkaAppender">
+        <topic>log-analysis</topic>
+        <zookeeperHost>192.168.1.231:2181</zookeeperHost>
+        <brokerList>192.168.1.231:9092</brokerList>
+        <!-- specify a custom formatter -->
+        <formatter class="com.log.kafka.formatter.JsonFormatter">
+            <!-- Whether we expect the log message to be JSON encoded or not. If set
+                to "false", the log message will be treated as a string, and wrapped in quotes.
+                Otherwise it will be treated as a parseable JSON object. -->
+            <expectJson>false</expectJson>
+        </formatter>
+    </appender>
+    <root level="info">
+        <appender-ref ref="KAFKA"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
